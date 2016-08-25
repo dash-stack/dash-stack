@@ -1,0 +1,73 @@
+{% extends "adminlte/base.html" %}
+{% import "adminlte/layout.html" as layout with context %}
+{% import "adminlte/widgets.html" as widgets with context %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block title %}Admin - {{ title }}{% endblock %}
+{% block description %}{{ block_description }}{% endblock %}
+
+{% block navbar %}
+
+  {% include "navbar.html" %}
+
+{%- endblock navbar %}
+
+
+{% block sidebar -%}
+
+  {% include 'sidebar.html' %}
+
+  {% include 'admin/sidebar_menu.html' %}
+
+{%- endblock sidebar %}
+
+
+{% block content_header -%}
+  {% include 'admin/content_header.html' %}
+{%- endblock content_header %}
+
+{% block content -%}
+    <!-- Main content --> 
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+              Validating {{provider.name}} - {{ provider.url }} - {{ conn.session.profile }} <br />
+              <hr />
+              Users: <br />
+              {% for user in conn.identity.users() %}
+              {{ user.name }} <br />
+              {% endfor %}
+              <hr />
+              Domains: <br />
+              {% for domain in conn.identity.domains() %}
+              {{ domain }} <br />
+              Domain Name: {{ domain.name }} |
+              Description: {{ domain.description }} 
+              {% endfor %}
+              <hr />
+              Services: <br />
+              {{ service }} <br />
+              {% for service in conn.identity.services() %}
+              Service Name: {{ service.name }} |
+              {% endfor %}
+              <hr />
+              <hr />
+              Credentials: <br />
+              {{ conn.identity.credentials }} <br />
+              {% for credential in conn.identity.credentials() %}
+              Credential Name: {{ credential }} |
+              {% endfor %}
+              <hr />
+              {{ project.id }}
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+{%- endblock content %}

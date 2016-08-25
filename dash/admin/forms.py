@@ -3,7 +3,7 @@ from flask import flash
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
                     ValidationError, SelectField 
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
-from ..models import User, Role
+from ..models import User, Role, Provider
 
 class EditUserAdminForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 128),
@@ -58,4 +58,29 @@ class CreateUserAdminForm(Form):
             
 class DeleteUserAdminForm(Form):
     confirm = BooleanField('Confirmed', validators=[Required(message='You must confirm to delete.')])
+
+
+class CreateProviderAdminForm(Form):
+    provider = StringField('Provider', validators=[Required(), Length(1, 128)])
+    name = StringField('Name', validators=[Required(), Length(1, 256)])
+    tenant_name = StringField('Tenant Name', validators=[Required(), Length(1, 128)])
+    username = StringField('User Name', validators=[Required(), Length(1, 128)])
+    password = PasswordField('Password', validators=[Required(), Length(1, 256)])
+    api_version = StringField('API Version', validators=[Required(), Length(1, 64)])
+    url = StringField('URL', validators=[Required(), Length(1, 256)])
+    enabled = BooleanField('Enabled')
     
+    def validate_name(self, field):
+        if Provider.query.filter_by(name=field.data).first():
+            raise ValidationError('Provider name is already used. Use different name.')
+            
+class EditProviderAdminForm(Form):
+    provider = SelectField('Provider', validators=[Required()],
+                            choices=[('openstack', 'OpenStack'), ('other', 'Other')])
+    name = StringField('Name', validators=[Required(), Length(1, 128)])
+    tenant_name = StringField('Tenant Name', validators=[Required(), Length(1, 128)])
+    username = StringField('User Name', validators=[Required(), Length(1, 128)])
+    password = PasswordField('Password', validators=[Required(), Length(1, 256)])
+    api_version = StringField('API Version', validators=[Required(), Length(1, 64)])
+    url = StringField('URL', validators=[Required(), Length(1, 256)])
+    enabled = BooleanField('Enabled')

@@ -6,9 +6,6 @@ Flask-Moment
 Flask-SQLAlchemy
 Flask-Script
 Flask-WTF
-flask_login
-flask_debugtoolbar
-python-dateutil
 Jinja2
 Mako
 MarkupSafe

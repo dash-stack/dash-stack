@@ -177,14 +177,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+# static root dir
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # media location
-MEDIA_ROOT = os.path.join(BASE_DIR, "static")
+MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
 
 # file location
 FILE_STORAGE = os.path.join(BASE_DIR, "files")

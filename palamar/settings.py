@@ -177,17 +177,21 @@ USE_L10N = True
 
 USE_TZ = True
 
-# static root dir
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# Static files (CSS, JavaScript, Images)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+#static url
+STATIC_URL = '/static/'
 
 # media location
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # file location
 FILE_STORAGE = os.path.join(BASE_DIR, "files")
 
-
-STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

@@ -53,6 +53,7 @@ def register_user(request):
             profile = Profile.objects.get(user_id=u.id)
             profile.activation_key = hashlib.sha1(salt + usernamesalt).hexdigest()
             profile.key_expires = timezone.now() + timedelta(days=2)
+            # create domain ve new user
             domain = Domain.objects.create(
                 name=form.cleaned_data['project'],
             )

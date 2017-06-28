@@ -16,6 +16,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'palamar',
     '127.0.0.1',
+    'localhost',
     'demo.palamar.io'
 ]
 
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'project',
     'role',
     'quota',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'cuser.middleware.CuserMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'palamar.urls'
@@ -85,6 +88,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django_settings_export.settings_export',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
             'libraries': {
                 'custom_tags': 'templatetags.custom_tags',
@@ -204,3 +209,67 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 DEFAULT_EMAIL_FROM = 'admin@palamar.org'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'authcp.views.save_profile',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'social_core.pipeline.social_auth.associate_by_email',
+)
+
+# Google auth settings
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '58128956219-lobtqsd956c9cpqvsd5ml2hvaa35ps9o'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'RNXY2W32PhAsGVZKx8WsxTmK'
+
+
+# Facebook auth settings
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '2.9'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id,name,email',
+}
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1816310968617086'
+# SECURITY WARNING: keep the secret key used in production secret!
+SOCIAL_AUTH_FACEBOOK_SECRET = '413880eed823c86f6e519afe0ae19341'
+
+
+# GITHUB auth settings
+
+SOCIAL_AUTH_GITHUB_SCOPE = ['email']
+
+SOCIAL_AUTH_GITHUB_PROFILE_EXTRA_PARAMS = {
+    'fields': 'name,email',
+}
+
+SOCIAL_AUTH_GITHUB_KEY = '07d27678fffaa29bc2cc'
+# SECURITY WARNING: keep the secret key used in production secret!
+SOCIAL_AUTH_GITHUB_SECRET = '23991546f87c828ed1e5699a48641c3b99daeae9'
+
+# split settings
+try:
+    LOCAL_SETTINGS
+except NameError:
+    try:
+        from local_settings import *
+    except ImportError:
+        pass
